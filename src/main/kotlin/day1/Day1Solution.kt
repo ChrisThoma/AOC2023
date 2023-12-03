@@ -1,12 +1,13 @@
 package day1
 
+import Solution
 import java.io.File
 import java.util.Scanner
 
-class Day1Solution {
+class Day1Solution : Solution {
 
     val numberMap = mapOf('0' to "zero", '1' to "one", '2' to "two", '3' to "three", '4' to "four", '5' to "five", '6' to "six", '7' to "seven", '8' to "eight", '9' to "nine")
-
+    override val inputPath = "src/main/kotlin/day1/Day1Input.txt"
     /*
     the calibration value can be found by combining the first digit and the last digit (in that order) to form a single two-digit number.
     For example:
@@ -24,13 +25,9 @@ class Day1Solution {
     Your calculation isn't quite right. It looks like some of the digits are actually spelled out with letters: one, two, three, four, five, six, seven, eight, and nine also count as valid "digits".
      */
 
-    fun solution() {
+    override fun printSolution() {
         printPart1Solution()
         printPart2Solution()
-    }
-
-    fun readFile(): File {
-        return File("src/main/kotlin/day1/Day1Input.txt")
     }
 
     fun printPart1Solution() {
