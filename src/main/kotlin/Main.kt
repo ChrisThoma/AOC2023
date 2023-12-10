@@ -1,5 +1,6 @@
 import day1.Day1Solution
 import day2.Day2Solution
+import day3.Day3Solution
 
 fun main(args: Array<String>) {
     println("Hello World!")
@@ -11,6 +12,9 @@ fun main(args: Array<String>) {
 //    val d1 : Solution = Day1Solution()
 //    d1.printSolution()
 
-    val d2 : Solution = Day2Solution()
-    d2.printSolution()
+//    val d2 : Solution = Day2Solution()
+//    d2.printSolution()
+
+    val d3 : Solution = Day3Solution()
+    d3.printSolution()
 }
