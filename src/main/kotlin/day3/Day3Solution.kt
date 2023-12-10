@@ -22,11 +22,12 @@ class Day3Solution : Solution {
             queue.add(Pair(0, 0))
             while (!queue.isEmpty()) {
                 val pair = queue.poll()
-                if (schematic[pair.first][pair.second].isDigit()) {
-                    val num = searchValidNumber(schematic, pair.first, pair.second)
-                    if (num >= 0) {
-                    println("valid number: $num")
-                        sum += num
+                if (schematic[pair.first][pair.second] == '*') {
+
+                    val firstNum = searchForNumber(schematic, pair.first, pair.second)
+                    val secondNum = searchForNumber(schematic, pair.first, pair.second)
+                    if (firstNum >= 0 && secondNum >= 0 && firstNum != secondNum) {
+                        sum += firstNum * secondNum
                     }
                 }
 
@@ -43,11 +44,12 @@ class Day3Solution : Solution {
         queue.add(Pair(1, 0))
         while (!queue.isEmpty()) {
             val pair = queue.poll()
-            if (schematic[pair.first][pair.second].isDigit()) {
-                val num = searchValidNumber(schematic, pair.first, pair.second)
-                if (num >= 0) {
-                    println("valid number: $num")
-                    sum += num
+            if (schematic[pair.first][pair.second] == '*') {
+                val firstNum = searchForNumber(schematic, pair.first, pair.second)
+                val secondNum = searchForNumber(schematic, pair.first, pair.second)
+                if (firstNum >= 0 && secondNum >= 0 && firstNum != secondNum) {
+                    println("valid numbers: $firstNum, $secondNum = ${firstNum*secondNum}")
+                    sum += firstNum * secondNum
                 }
             }
 
@@ -57,6 +59,77 @@ class Day3Solution : Solution {
         }
 
         println("sum = $sum")
+    }
+
+    private fun searchForNumber(schematic: List<MutableList<Char>>, i: Int, j: Int) : Int {
+        if (i - 1 >= 0) {
+            if (isDigit(schematic, i-1, j)) {
+                return createNumber(schematic, i-1, j)
+            }
+
+            if (j - 1 >= 0) {
+                if (isDigit(schematic, i-1, j-1)) {
+                    return createNumber(schematic, i-1, j-1)
+                }
+            }
+
+            if (j + 1 < schematic[i-1].size) {
+                if (isDigit(schematic, i-1, j+1)) {
+                    return createNumber(schematic, i-1, j+1)
+                }
+            }
+        }
+
+        if (i + 1 < schematic.size) {
+            if (isDigit(schematic, i+1, j)) {
+                return createNumber(schematic, i+1, j)
+            }
+
+            if (j + 1 < schematic[i].size) {
+                if (isDigit(schematic, i+1, j+1)) {
+                    return createNumber(schematic, i+1, j+1)
+                }
+            }
+
+            if (j - 1 >= 0) {
+                if (isDigit(schematic, i + 1, j-1)) {
+                    return createNumber(schematic, i+1, j-1)
+                }
+            }
+        }
+
+        if (j - 1 >= 0) {
+            if (isDigit(schematic, i, j-1)) {
+                return createNumber(schematic, i, j-1)
+            }
+        }
+        if (j + 1 < schematic[i].size) {
+            if (isDigit(schematic, i, j+1)) {
+                return createNumber(schematic, i, j+1)
+            }
+        }
+
+        return -1
+    }
+
+    private fun createNumber(schematic: List<MutableList<Char>>, i: Int, j: Int) : Int {
+        val stringBuilder = StringBuilder()
+        for (x in j downTo 0) {
+            if (!schematic[i][x].isDigit()) {
+                break
+            }
+            stringBuilder.insert(0, schematic[i][x])
+            schematic[i][x] = '.'
+
+        }
+        for (x in j+1..< schematic[i].size) {
+            if (!schematic[i][x].isDigit()) {
+                break
+            }
+            stringBuilder.append(schematic[i][x])
+            schematic[i][x] = '.'
+        }
+        return stringBuilder.toString().toInt()
     }
 
     private fun searchValidNumber(schematic: List<MutableList<Char>>, i: Int, j: Int) : Int {
@@ -130,5 +203,9 @@ class Day3Solution : Solution {
 
     private fun isSymbol(schematic: List<MutableList<Char>>, i: Int, j: Int) : Boolean {
         return schematic[i][j] != '.' && !schematic[i][j].isDigit()
+    }
+
+    private fun isDigit(schematic: List<MutableList<Char>>, i:Int, j:Int) : Boolean {
+        return schematic[i][j].isDigit()
     }
 }
